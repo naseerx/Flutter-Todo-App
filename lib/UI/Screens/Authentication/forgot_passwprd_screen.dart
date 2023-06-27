@@ -59,13 +59,19 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   hintText: 'Email',
                 ),
                 const SizedBox(height: 20.0),
-                MyButtonLong(name: 'Reset', onTap: () {}),
+                MyButtonLong(
+                    name: 'Reset',
+                    onTap: () {
+                      loginProvider.sendPasswordResetEmail(
+                          emailController.text, context);
+                    }),
                 const SizedBox(height: 30.0),
                 Center(
-                  child: MyTextButton(name: 'Back To Login', onTap: () {
-                    Get.to(() => const LoginScreen());
-
-                  }),
+                  child: MyTextButton(
+                      name: 'Back To Login',
+                      onTap: () {
+                        Get.to(() => const LoginScreen());
+                      }),
                 ),
                 const SizedBox(height: 15.0),
               ],

@@ -38,6 +38,10 @@ dependencies:
   firebase_core: ^2.14.0
   firebase_auth: ^4.6.3
   cloud_firestore: ^4.8.1
+  firebase_messaging: ^14.6.3
+  flutter_local_notifications: ^14.1.1
+  app_settings: ^4.2.0
+  http:
   shared_preferences: ^2.1.2
   provider: ^6.0.5
   ndialog: ^4.3.0

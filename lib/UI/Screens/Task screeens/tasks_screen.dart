@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:haztech_task/Core/Constants/colors.dart';
+import 'package:haztech_task/Core/enums/task_sorting.dart';
+import 'package:haztech_task/Core/notification_services.dart';
 import 'package:haztech_task/Core/providers/task_provider.dart';
 import 'package:haztech_task/UI/Screens/Task%20screeens/add_task_screen.dart';
 import 'package:haztech_task/UI/custom_widgets/custom_snackbars.dart';
@@ -19,6 +21,18 @@ class TasksScreen extends StatefulWidget {
 }
 
 class _TasksScreenState extends State<TasksScreen> {
+  NotificationServices notificationServices = NotificationServices();
+
+  @override
+  void initState() {
+    super.initState();
+    notificationServices.requestNotificationPermission();
+    notificationServices.getDeviceToken().then((value) {
+      print('Device token');
+      print(value);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<TaskProvider>(builder: (context, taskProvider, child) {
@@ -31,7 +45,9 @@ class _TasksScreenState extends State<TasksScreen> {
               const SizedBox(height: 30),
               Row(
                 children: [
-                  const CircleAvatar(),
+                  const CircleAvatar(
+                    child: Icon(Icons.person),
+                  ),
                   const SizedBox(width: 10),
                   const Text('Hello '),
                   taskProvider.username == null
@@ -63,25 +79,46 @@ class _TasksScreenState extends State<TasksScreen> {
                           ),
                           backgroundColor: Colors.white,
                         );
-                      }, icon: const Icon(Icons.settings)),
+                      },
+                      icon: const Icon(Icons.settings)),
                 ],
               ),
               const SizedBox(height: 20),
+              const Text(
+                'ToDos',
+                style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: kPrimaryColor),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: const [
+                  Text(
+                    'Filter By',
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: kBlack),
+                  ),
+                  Spacer(),
+                  Text(
+                    'Sorted By',
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: kBlack),
+                  ),
+                ],
+              ),
               Row(
                 children: [
-                  const Text(
-                    'ToDos',
-                    style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: kPrimaryColor),
-                  ),
-                  const Spacer(),
                   DropdownButton<TaskFilter>(
                     value: taskProvider.currentFilter,
                     onChanged: (TaskFilter? newValue) {
                       if (newValue != null) {
                         taskProvider.updateFilter(newValue);
+                        taskProvider.updateSortOption(TaskSortOption.none);
                       }
                     },
                     items: TaskFilter.values.map((TaskFilter filter) {
@@ -98,7 +135,31 @@ class _TasksScreenState extends State<TasksScreen> {
                         child: Text(filterText),
                       );
                     }).toList(),
-                  )
+                  ),
+                  const Spacer(),
+                  DropdownButton<TaskSortOption>(
+                    value: taskProvider.currentOption,
+                    onChanged: (TaskSortOption? newValue) {
+                      if (newValue != null) {
+                        taskProvider.updateSortOption(newValue);
+                        taskProvider.updateFilter(TaskFilter.all);
+                      }
+                    },
+                    items: TaskSortOption.values.map((TaskSortOption filter) {
+                      String optionText = '';
+                      if (filter == TaskSortOption.none) {
+                        optionText = 'None';
+                      } else if (filter == TaskSortOption.dueDate) {
+                        optionText = 'Due date';
+                      } else if (filter == TaskSortOption.creationDate) {
+                        optionText = 'Create Date';
+                      }
+                      return DropdownMenuItem<TaskSortOption>(
+                        value: filter,
+                        child: Text(optionText),
+                      );
+                    }).toList(),
+                  ),
                 ],
               ),
               Expanded(
@@ -145,6 +206,8 @@ class _TasksScreenState extends State<TasksScreen> {
                                 taskProvider.updateTaskStatus(
                                     task.id, !task.done);
                               },
+                              dueDate: task.dueDate,
+                              createDate: task.createDate,
                             ),
                           );
                         },
@@ -168,6 +231,4 @@ class _TasksScreenState extends State<TasksScreen> {
       );
     });
   }
-
-
 }

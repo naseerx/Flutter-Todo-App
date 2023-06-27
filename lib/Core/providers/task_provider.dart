@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:haztech_task/Core/enums/task_sorting.dart';
+import 'package:haztech_task/UI/Screens/Authentication/login_screen.dart';
 import 'package:haztech_task/UI/custom_widgets/custom_snackbars.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:get/get.dart';
@@ -16,8 +18,10 @@ class TaskProvider extends ChangeNotifier {
   String? username;
   late Stream<List<Task>> _taskStream;
   TaskFilter currentFilter = TaskFilter.all;
+  TaskSortOption currentOption = TaskSortOption.none;
 
   Stream<List<Task>> get taskStream => _taskStream;
+  DateTime? selectedDueDate;
 
   TaskProvider() {
     getUserName();
@@ -34,7 +38,9 @@ class TaskProvider extends ChangeNotifier {
         'title': title,
         'description': description ?? '',
         'uid': user?.uid,
-        'done': false
+        'done': false,
+        'create_at': DateTime.now(),
+        'due': selectedDueDate,
       });
       dialog.dismiss();
       Get.back();
@@ -55,6 +61,10 @@ class TaskProvider extends ChangeNotifier {
     }
   }
 
+  DateTime convertTimestampToDateTime(Timestamp timestamp) {
+    return timestamp.toDate();
+  }
+
   void updateTaskStatus(String taskId, bool newStatus) {
     _firestore
         .collection('tasks')
@@ -64,6 +74,20 @@ class TaskProvider extends ChangeNotifier {
     }).catchError((error) {
       print('Failed to update task status: $error');
     });
+  }
+
+  Future<void> selectDate(BuildContext context) async {
+    final initialDate = selectedDueDate ?? DateTime.now();
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2100),
+    );
+    if (pickedDate != null) {
+      selectedDueDate = pickedDate;
+      notifyListeners();
+    }
   }
 
   Future<void> getUserName() async {
@@ -109,6 +133,7 @@ class TaskProvider extends ChangeNotifier {
     try {
       await _auth.signOut();
       CustomSnackBar.showSuccess('Logout successfully');
+      Get.offAll(() => const LoginScreen());
     } catch (e) {
       print('Error signing out: $e');
       rethrow;
@@ -119,14 +144,31 @@ class TaskProvider extends ChangeNotifier {
     Query query = _firestore.collection('tasks');
     print('>>>>>>>>>>>>>>>>>>');
     print(TaskFilter);
+    final currentUserUid = FirebaseAuth.instance.currentUser?.uid;
+    if (currentUserUid != null) {
+      query = query.where('uid', isEqualTo: currentUserUid);
+    } else {
+      return;
+    }
     switch (currentFilter) {
       case TaskFilter.done:
-        query = _firestore.collection('tasks').where('done', isEqualTo: true);
+        query = _firestore
+            .collection('tasks')
+            .where('done', isEqualTo: true)
+            .where('uid', isEqualTo: currentUserUid);
         break;
       case TaskFilter.pending:
-        query = _firestore.collection('tasks').where('done', isEqualTo: false);
+        query = _firestore
+            .collection('tasks')
+            .where('done', isEqualTo: false)
+            .where('uid', isEqualTo: currentUserUid);
         break;
       default:
+    }
+    if (currentOption == TaskSortOption.dueDate) {
+      query = _firestore.collection('tasks').orderBy('due');
+    } else if (currentOption == TaskSortOption.creationDate) {
+      query = _firestore.collection('tasks').orderBy('create_at');
     }
     _taskStream = query.snapshots().map((snapshot) =>
         snapshot.docs.map((doc) => Task.fromSnapshot(doc)).toList());
@@ -135,6 +177,14 @@ class TaskProvider extends ChangeNotifier {
   void updateFilter(TaskFilter newFilter) {
     if (currentFilter != newFilter) {
       currentFilter = newFilter;
+      fetchTasks();
+      notifyListeners();
+    }
+  }
+
+  void updateSortOption(TaskSortOption sortOption) {
+    if (currentOption != sortOption) {
+      currentOption = sortOption;
       fetchTasks();
       notifyListeners();
     }

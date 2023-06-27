@@ -36,4 +36,18 @@ class LoginProvider extends ChangeNotifier {
       rethrow;
     }
   }
+  Future<void> sendPasswordResetEmail(String email, BuildContext context) async {
+    ProgressDialog dialog = ProgressDialog(context,
+        title: const Text('Loading'), message: const Text('Please wait'));
+    try {
+      dialog.show();
+      await _auth.sendPasswordResetEmail(email: email);
+      CustomSnackBar.showSuccess('Password reset email sent');
+      dialog.dismiss();
+    } catch (e) {
+      CustomSnackBar.showError('Error sending password reset email: $e');
+      dialog.dismiss();
+      rethrow;
+    }
+  }
 }

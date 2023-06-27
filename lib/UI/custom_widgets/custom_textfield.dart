@@ -7,6 +7,7 @@ import '../../Core/Constants/colors.dart';
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final bool obscure;
+  final bool readOnly;
   final String? errorText;
   final String hintText;
   final bool? enabled;
@@ -35,7 +36,8 @@ class CustomTextField extends StatelessWidget {
       this.onSaved,
       this.suffixIcon,
       @required this.prefixIcon,
-      this.onChanged})
+      this.onChanged,
+      this.readOnly = false})
       : super(key: key);
 
   @override
@@ -48,6 +50,7 @@ class CustomTextField extends StatelessWidget {
       ),
       child: Center(
         child: TextField(
+          readOnly: readOnly,
           controller: controller,
           obscureText: obscure,
           decoration: InputDecoration(
@@ -62,7 +65,6 @@ class CustomTextField extends StatelessWidget {
           ),
           onTap: onTap,
           onChanged: onChanged,
-
         ),
       ),
     );
