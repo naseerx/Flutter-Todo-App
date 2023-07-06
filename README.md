@@ -1,4 +1,4 @@
-# haztech_task
+# Flutter Todo App
 
 A new Flutter project.
 
