@@ -7,16 +7,14 @@ import 'package:haztech_task/Core/Constants/strings.dart';
 import 'package:haztech_task/Core/providers/signup_provider.dart';
 import 'package:haztech_task/Core/providers/task_provider.dart';
 import 'package:haztech_task/UI/Screens/Authentication/login_screen.dart';
-import 'package:haztech_task/UI/Screens/Task%20screeens/tasks_screen.dart';
 import 'package:haztech_task/UI/Screens/introduction_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'Core/providers/login_provider.dart';
+import 'Core/services/local_notification.dart';
 
 int? initScreen;
 SharedPreferences? prefs;
-final FirebaseAuth _auth = FirebaseAuth.instance;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +22,7 @@ void main() async {
   prefs = await SharedPreferences.getInstance();
   initScreen = (prefs?.getInt("initScreen"));
   prefs?.setInt("initScreen", 1);
+  LocalNotificationService().init();
   runApp(const MyApp());
 }
 
@@ -45,19 +44,16 @@ class MyApp extends StatelessWidget {
             fontFamily: 'MyFont',
             useMaterial3: true,
             appBarTheme: const AppBarTheme(
-                centerTitle: true,
-                backgroundColor: kPrimaryColor,
-                foregroundColor: kWhite,
-                toolbarHeight: 70),
+                centerTitle: true, foregroundColor: kWhite, toolbarHeight: 70),
             scaffoldBackgroundColor: kBGColor),
         initialRoute: initScreen == 0 || initScreen == null ? "/" : "home",
         routes: {
           '/': (context) => const MyIntroductionScreen(),
-          'home': (context) =>
-              _auth.currentUser == null ? const LoginScreen() : const TasksScreen(),
+          'home': (context) => const LoginScreen()
+          // _auth.currentUser == null ? const LoginScreen() : const TasksScreen(),
         },
+        debugShowCheckedModeBanner: false,
       ),
     );
   }
-
 }

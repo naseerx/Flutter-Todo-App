@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 
 import '../Models/task_model.dart';
 import '../enums/task_filter.dart';
+import '../services/local_notification.dart';
 
 class TaskProvider extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -42,6 +43,16 @@ class TaskProvider extends ChangeNotifier {
         'create_at': DateTime.now(),
         'due': selectedDueDate,
       });
+      // DateTime taskAddedTime = DateTime.now();
+      // DateTime notificationTime = taskAddedTime.add(const Duration(minutes: 1));
+      print(selectedDueDate);
+      await LocalNotificationService().scheduleNotification(
+        id: 1,
+        title: 'Task Reminder',
+        body: 'Don\'t forget to complete your task: Alfred Local Notification',
+        scheduledNotificationDateTime: selectedDueDate!,
+      );
+
       dialog.dismiss();
       Get.back();
       CustomSnackBar.showSuccess('Task Added Successfully');

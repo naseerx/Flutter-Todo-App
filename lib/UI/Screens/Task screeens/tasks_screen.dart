@@ -92,8 +92,8 @@ class _TasksScreenState extends State<TasksScreen> {
                     color: kPrimaryColor),
               ),
               const SizedBox(height: 20),
-              Row(
-                children: const [
+              const Row(
+                children: [
                   Text(
                     'Filter By',
                     style: TextStyle(
