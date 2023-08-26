@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:haztech_task/Core/Constants/colors.dart';
 import 'package:haztech_task/Core/providers/task_provider.dart';
 import 'package:haztech_task/UI/custom_widgets/custom_buttons.dart';
 import 'package:haztech_task/UI/custom_widgets/custom_snackbars.dart';
@@ -6,7 +7,6 @@ import 'package:haztech_task/UI/custom_widgets/custom_textfield.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../../Core/Constants/colors.dart';
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({Key? key}) : super(key: key);

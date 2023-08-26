@@ -57,7 +57,6 @@ class LocalNotificationService {
         iOS: DarwinNotificationDetails());
   }
 
-  ///Simple Notification
   Future<void> showLocalNotification(
       {int id = 0, String? title, String? body, String? payLoad}) async {
     return localNotificationsPlugin.show(id, title, body, notificationDetails(),
