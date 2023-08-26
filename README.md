@@ -1,16 +1,50 @@
+# Hi, I'm NASEER! 👋
 # Flutter Todo App
 
-A new Flutter project.
+Flutter Todo App is a  simple Flutter application that is used to store your daily tasks.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## Authors
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- [@Muhammad Naseer](https://www.github.com/naseerx)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+## Screenshots
+
+<div style="display: flex; flex-direction: column; align-items: center;">
+  <strong style="font-size: 24px; color: #007BFF;">Registration Screens</strong>
+</div>
+
+<p float="left">
+  <img src="https://github.com/naseerx/Flutter-Todo-App/blob/main/SS/login.png" style="width: 30%;">
+  <img src="https://github.com/naseerx/Flutter-Todo-App/blob/main/SS/signup.png" style="width: 30%;">
+  <img src="https://github.com/naseerx/Flutter-Todo-App/blob/main/SS/forgot.png" style="width: 30%;">
+
+</p>
+
+
+<div style="display: flex; flex-direction: column; align-items: center;">
+  <strong style="font-size: 24px; color: #007BFF;">Home Screens</strong>
+</div>
+
+<p float="left">
+  <img src="https://github.com/naseerx/Flutter-Todo-App/blob/main/SS/home.png" style="width: 30%;">
+  <img src="https://github.com/naseerx/Flutter-Todo-App/blob/main/SS/setting.png" style="width: 30%;">
+
+</p>
+
+
+<div style="display: flex; flex-direction: column; align-items: center;">
+  <strong style="font-size: 24px; color: #007BFF;">Filter Screens</strong>
+</div>
+
+<p float="left">
+  <img src="https://github.com/naseerx/Flutter-Todo-App/blob/main/SS/filter_done.png" style="width: 30%;">
+  <img src="https://github.com/naseerx/Flutter-Todo-App/blob/main/SS/filter_pending.png" style="width: 30%;">
+
+</p>
+
+
+
