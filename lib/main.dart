@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => TaskProvider()),
       ],
       child: GetMaterialApp(
-        title: 'My ToDo app',
+        title: 'ToDo app',
         theme: ThemeData(
             primarySwatch: Colors.blue,
             fontFamily: 'MyFont',
@@ -50,7 +50,6 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => const MyIntroductionScreen(),
           'home': (context) => const LoginScreen()
-          // _auth.currentUser == null ? const LoginScreen() : const TasksScreen(),
         },
         debugShowCheckedModeBanner: false,
       ),

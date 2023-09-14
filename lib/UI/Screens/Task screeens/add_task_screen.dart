@@ -24,7 +24,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     return Consumer<TaskProvider>(builder: (context, taskProvider, child) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text('Add Task'),
+          title: const Text('Adding  Task Screen'),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -53,7 +53,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     color: kPrimaryColor,
                   ),
                   controller: descriptionController,
-                  hintText: 'Description',
+                  hintText: 'Description...',
                 ),
                 const SizedBox(height: 10.0),
                 CustomTextField(
