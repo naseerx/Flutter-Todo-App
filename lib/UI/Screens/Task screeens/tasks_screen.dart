@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:haztech_task/Core/Constants/colors.dart';
@@ -25,11 +26,21 @@ class _TasksScreenState extends State<TasksScreen> {
 
   @override
   void initState() {
+    fetchTasks();
     super.initState();
     notificationServices.requestNotificationPermission();
     notificationServices.getDeviceToken().then((value) {
       print('Device token');
       print(value);
+    });
+
+  }
+  void fetchTasks() {
+    Query query = FirebaseFirestore.instance.collection('tasks');
+    query.snapshots().listen((snapshot) {
+      snapshot.docs.forEach((doc) {
+        print(doc['title']);
+      });
     });
   }
 
