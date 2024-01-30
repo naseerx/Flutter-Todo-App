@@ -38,9 +38,9 @@ class _TasksScreenState extends State<TasksScreen> {
   void fetchTasks() {
     Query query = FirebaseFirestore.instance.collection('tasks');
     query.snapshots().listen((snapshot) {
-      snapshot.docs.forEach((doc) {
+      for (var doc in snapshot.docs) {
         print(doc['title']);
-      });
+      }
     });
   }
 

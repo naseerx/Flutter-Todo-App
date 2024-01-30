@@ -7,6 +7,7 @@ import 'package:haztech_task/Core/Constants/strings.dart';
 import 'package:haztech_task/Core/providers/signup_provider.dart';
 import 'package:haztech_task/Core/providers/task_provider.dart';
 import 'package:haztech_task/UI/Screens/Authentication/login_screen.dart';
+import 'package:haztech_task/UI/Screens/Task%20screeens/tasks_screen.dart';
 import 'package:haztech_task/UI/Screens/introduction_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,7 +50,9 @@ class MyApp extends StatelessWidget {
         initialRoute: initScreen == 0 || initScreen == null ? "/" : "home",
         routes: {
           '/': (context) => const MyIntroductionScreen(),
-          'home': (context) => const LoginScreen()
+          'home': (context) => FirebaseAuth.instance.currentUser == null
+              ? const LoginScreen()
+              : const TasksScreen()
         },
         debugShowCheckedModeBanner: false,
       ),
