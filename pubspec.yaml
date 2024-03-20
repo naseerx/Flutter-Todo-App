@@ -49,6 +49,8 @@ dependencies:
   intl: ^0.18.1
   get: ^4.6.5
   introduction_screen: ^3.1.8
+  crypto: ^3.0.3
+  sign_in_with_apple: ^5.0.0
 
 dev_dependencies:
   flutter_test:
