@@ -14,7 +14,6 @@ import 'Core/providers/login_provider.dart';
 import 'Core/services/local_notification.dart';
 import 'firebase_options.dart';
 
-
 int? initScreen;
 SharedPreferences? prefs;
 
